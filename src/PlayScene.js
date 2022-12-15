@@ -37,6 +37,13 @@ const GAME_SPEED = {
   [LIFE_STAGE.SENIOR]: 5,
 };
 
+const GAME_ACCELERATION = {
+  [LIFE_STAGE.KID]: 0.01,
+  [LIFE_STAGE.TEEN]: 0.02,
+  [LIFE_STAGE.ADULT]: 0.03,
+  [LIFE_STAGE.SENIOR]: 0.01,
+};
+
 class PlayScene extends Phaser.Scene {
   constructor() {
     super('PlayScene');
@@ -288,7 +295,7 @@ class PlayScene extends Phaser.Scene {
         }
 
         this.score++;
-        this.gameSpeed += 0.01;
+        this.gameSpeed += GAME_ACCELERATION[this.lifeStage];
 
         if (this.score % 100 === 0) {
           this.reachSound.play();
