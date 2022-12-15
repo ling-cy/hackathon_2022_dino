@@ -11,6 +11,7 @@ class PlayScene extends Phaser.Scene {
     this.isGameRunning = false;
     this.respawnTime = 0;
     this.score = 0;
+    this.life = 1;
 
     this.jumpSound = this.sound.add('jump', { volume: 0.2 });
     this.hitSound = this.sound.add('hit', { volume: 0.2 });
@@ -49,6 +50,15 @@ class PlayScene extends Phaser.Scene {
       .setOrigin(1, 0)
       .setAlpha(0);
 
+    this.lifeText = this.add
+      .text(width, this.scoreText.height + 20, '1', {
+        fill: '#535353',
+        font: '900 35px Courier',
+        resolution: 5,
+      })
+      .setOrigin(1, 0)
+      .setAlpha(0);
+
     this.environment = this.add.group();
     this.environment.addMultiple([
       this.add.image(width / 2, 170, 'cloud'),
@@ -65,6 +75,7 @@ class PlayScene extends Phaser.Scene {
     this.gameOverScreen.add([this.gameOverText, this.restart]);
 
     this.obstacles = this.physics.add.group();
+    this.armours = this.physics.add.group();
 
     this.initAnims();
     this.initStartTrigger();
@@ -77,29 +88,46 @@ class PlayScene extends Phaser.Scene {
     this.physics.add.collider(
       this.dino,
       this.obstacles,
-      () => {
-        this.highScoreText.x = this.scoreText.x - this.scoreText.width - 20;
+      (dino, obstacle) => {
+        this.life--;
+        if (this.life <= 0) {
+          this.highScoreText.x = this.scoreText.x - this.scoreText.width - 20;
 
-        const highScore = this.highScoreText.text.substr(
-          this.highScoreText.text.length - 5,
-        );
-        const newScore =
-          Number(this.scoreText.text) > Number(highScore)
-            ? this.scoreText.text
-            : highScore;
+          const highScore = this.highScoreText.text.substr(
+            this.highScoreText.text.length - 5,
+          );
+          const newScore =
+            Number(this.scoreText.text) > Number(highScore)
+              ? this.scoreText.text
+              : highScore;
 
-        this.highScoreText.setText('HI ' + newScore);
-        this.highScoreText.setAlpha(1);
-
-        this.physics.pause();
-        this.isGameRunning = false;
-        this.anims.pauseAll();
-        this.dino.setTexture('boy-hurt');
-        this.respawnTime = 0;
-        this.gameSpeed = 10;
-        this.gameOverScreen.setAlpha(1);
-        this.score = 0;
+          this.highScoreText.setText('HI ' + newScore);
+          this.highScoreText.setAlpha(1);
+          this.physics.pause();
+          this.isGameRunning = false;
+          this.anims.pauseAll();
+          this.dino.setTexture('boy-hurt');
+          this.respawnTime = 0;
+          this.gameSpeed = 10;
+          this.gameOverScreen.setAlpha(1);
+          this.score = 0;
+        } else {
+          obstacle.disableBody(true, true);
+        }
+        this.setLifeText();
         this.hitSound.play();
+      },
+      null,
+      this,
+    );
+
+    this.physics.add.overlap(
+      this.dino,
+      this.armours,
+      (dino, armour) => {
+        this.life++;
+        armour.disableBody(true, true);
+        this.setLifeText();
       },
       null,
       this,
@@ -137,6 +165,7 @@ class PlayScene extends Phaser.Scene {
               this.dino.setVelocityX(0);
               this.scoreText.setAlpha(1);
               this.environment.setAlpha(1);
+              this.setLifeText();
               startEvent.remove();
             }
           },
@@ -168,6 +197,16 @@ class PlayScene extends Phaser.Scene {
     this.anims.create({
       key: 'enemy-dino-fly',
       frames: this.anims.generateFrameNumbers('enemy-bird', {
+        start: 0,
+        end: 1,
+      }),
+      frameRate: 6,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: 'armour',
+      frames: this.anims.generateFrameNumbers('armour', {
         start: 0,
         end: 1,
       }),
@@ -213,11 +252,14 @@ class PlayScene extends Phaser.Scene {
 
   handleInputs() {
     this.restart.on('pointerdown', () => {
+      this.life = 1;
+      this.setLifeText();
       this.dino.setVelocityY(0);
       this.dino.body.height = 92;
       this.dino.body.offset.y = 0;
       this.physics.resume();
       this.obstacles.clear(true, true);
+      this.armours.clear(true, true);
       this.isGameRunning = true;
       this.gameOverScreen.setAlpha(0);
       this.anims.resumeAll();
@@ -289,6 +331,30 @@ class PlayScene extends Phaser.Scene {
     obstacle.setImmovable();
   }
 
+  placeArmour() {
+    const hasArmour = Math.floor(Math.random() * 1000) / 900; //TODO: lesser when dino older
+    const distance = Phaser.Math.Between(300, 400);
+
+    if (hasArmour >= 1) {
+      let armour;
+      armour = this.armours
+        .create(
+          this.game.config.width + distance,
+          this.game.config.height,
+          'armour',
+        )
+        .setOrigin(0, 1);
+      armour.play('armour', 1);
+      armour.body.offset.y = +10;
+      armour.setImmovable();
+    }
+  }
+
+  setLifeText() {
+    this.lifeText.setText('LIFE x' + this.life);
+    this.lifeText.setAlpha(1);
+  }
+
   update(time, delta) {
     if (!this.isGameRunning) {
       return;
@@ -296,17 +362,25 @@ class PlayScene extends Phaser.Scene {
 
     this.ground.tilePositionX += this.gameSpeed;
     Phaser.Actions.IncX(this.obstacles.getChildren(), -this.gameSpeed);
+    Phaser.Actions.IncX(this.armours.getChildren(), -this.gameSpeed);
     Phaser.Actions.IncX(this.environment.getChildren(), -0.5);
 
     this.respawnTime += delta * this.gameSpeed * 0.08;
     if (this.respawnTime >= 1500) {
       this.placeObstacle();
+      this.placeArmour();
       this.respawnTime = 0;
     }
 
     this.obstacles.getChildren().forEach(obstacle => {
       if (obstacle.getBounds().right < 0) {
         this.obstacles.killAndHide(obstacle);
+      }
+    });
+
+    this.armours.getChildren().forEach(armour => {
+      if (armour.getBounds().right < 0) {
+        this.armours.killAndHide(armour);
       }
     });
 

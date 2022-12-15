@@ -61,6 +61,11 @@ class PreloadScene extends Phaser.Scene {
     this.load.image('obstacle-4', 'assets/virus_big_1.png');
     this.load.image('obstacle-5', 'assets/virus_big_2.png');
     this.load.image('obstacle-6', 'assets/virus_big_3.png');
+
+    this.load.spritesheet('armour', 'assets/enemy-bird.png', {
+      frameWidth: 92,
+      frameHeight: 77,
+    });
   }
 
   create() {
