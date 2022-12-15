@@ -41,18 +41,16 @@ class PreloadScene extends Phaser.Scene {
       frameHeight: 94,
     });
 
-    // TODO: change assets to adult
-    this.load.image('adult-idle', 'assets/dino-idle.png');
-    this.load.image('adult-hurt', 'assets/dino-hurt.png');
-    this.load.spritesheet('adult-texture', 'assets/dino-texture.png', {
+    this.load.image('adult-idle', 'assets/adult-idle.png');
+    this.load.image('adult-hurt', 'assets/adult-hurt.png');
+    this.load.spritesheet('adult-texture', 'assets/adult-texture.png', {
       frameWidth: 88,
       frameHeight: 94,
     });
 
-    // TODO: change assets to senior
-    this.load.image('senior-idle', 'assets/dino-idle.png');
-    this.load.image('senior-hurt', 'assets/dino-hurt.png');
-    this.load.spritesheet('senior-texture', 'assets/dino-texture.png', {
+    this.load.image('senior-idle', 'assets/senior-idle.png');
+    this.load.image('senior-hurt', 'assets/senior-hurt.png');
+    this.load.spritesheet('senior-texture', 'assets/senior-texture.png', {
       frameWidth: 88,
       frameHeight: 94,
     });
