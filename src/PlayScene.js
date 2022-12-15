@@ -23,6 +23,21 @@ const OBSTACLES_DISTANCE = {
   [LIFE_STAGE.SENIOR]: 400,
 };
 
+// this const determine how often the armour being created
+const ARMOUR_CONSTANT = {
+  [LIFE_STAGE.KID]: 0.7,
+  [LIFE_STAGE.TEEN]: 0.5,
+  [LIFE_STAGE.ADULT]: 0.3,
+  [LIFE_STAGE.SENIOR]: 0.1,
+};
+
+const ARMOUR_DISTANCE = {
+  [LIFE_STAGE.KID]: 250,
+  [LIFE_STAGE.TEEN]: 350,
+  [LIFE_STAGE.ADULT]: 450,
+  [LIFE_STAGE.SENIOR]: 250,
+};
+
 const STARTING_SCORE = {
   [LIFE_STAGE.KID]: 0,
   [LIFE_STAGE.TEEN]: 100,
@@ -388,13 +403,11 @@ class PlayScene extends Phaser.Scene {
   }
 
   placeArmour() {
-    const distance = Phaser.Math.Between(300, 400);
-
-    if (Math.random() <= this.showArmourProbability) {
+    if (Math.random() <= ARMOUR_CONSTANT[this.lifeStage]) {
       let armour;
       armour = this.armours
         .create(
-          this.game.config.width + distance,
+          this.game.config.width + ARMOUR_DISTANCE[this.lifeStage],
           this.game.config.height,
           'armour',
         )

@@ -28,7 +28,7 @@ class PreloadScene extends Phaser.Scene {
 
     this.load.image('kid-idle', 'assets/kid-idle.png');
     this.load.image('kid-hurt', 'assets/kid-hurt.png');
-    this.load.spritesheet('kid-texture', 'assets/kid-run.png', {
+    this.load.spritesheet('kid-texture', 'assets/kid-texture.png', {
       frameWidth: 88,
       frameHeight: 94,
     });
