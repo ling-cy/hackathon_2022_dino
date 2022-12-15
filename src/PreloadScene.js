@@ -33,7 +33,6 @@ class PreloadScene extends Phaser.Scene {
       frameHeight: 94,
     });
 
-    // TODO: change assets to teen
     this.load.image('teen-idle', 'assets/teen-idle.png');
     this.load.image('teen-hurt', 'assets/teen-hurt.png');
     this.load.spritesheet('teen-texture', 'assets/teen-texture.png', {
