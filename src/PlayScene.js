@@ -23,7 +23,20 @@ const OBSTACLES_DISTANCE = {
   [LIFE_STAGE.SENIOR]: 400,
 };
 
-const INITIAL_GAME_SPEED = 10;
+const STARTING_SCORE = {
+  [LIFE_STAGE.KID]: 0,
+  [LIFE_STAGE.TEEN]: 100,
+  [LIFE_STAGE.ADULT]: 200,
+  [LIFE_STAGE.SENIOR]: 300,
+};
+
+const GAME_SPEED = {
+  [LIFE_STAGE.KID]: 5,
+  [LIFE_STAGE.TEEN]: 8,
+  [LIFE_STAGE.ADULT]: 13,
+  [LIFE_STAGE.SENIOR]: 5,
+};
+
 class PlayScene extends Phaser.Scene {
   constructor() {
     super('PlayScene');
@@ -31,13 +44,13 @@ class PlayScene extends Phaser.Scene {
 
   create() {
     const { height, width } = this.game.config;
-    this.gameSpeed = INITIAL_GAME_SPEED;
+    this.lifeStage = LIFE_STAGE.KID;
+    this.gameSpeed = GAME_SPEED[this.lifeStage];
     this.isGameRunning = false;
     this.respawnTime = 0;
     this.score = 0;
     this.life = 1;
     this.showArmourProbability = 0.9;
-    this.lifeStage = LIFE_STAGE.KID;
 
     this.jumpSound = this.sound.add('jump', { volume: 0.2 });
     this.hitSound = this.sound.add('hit', { volume: 0.2 });
@@ -391,13 +404,20 @@ class PlayScene extends Phaser.Scene {
   }
 
   update_lifeStage() {
-    if (this.score >= 0 && this.score < 100) {
+    if (
+      this.score >= STARTING_SCORE[LIFE_STAGE.KID] &&
+      this.score < STARTING_SCORE[LIFE_STAGE.TEEN]
+    ) {
       this.lifeStage = LIFE_STAGE.KID;
-      this.showArmourChance = 0.9;
-    } else if (this.score >= 100 && this.score < 200) {
+    } else if (
+      this.score >= STARTING_SCORE[LIFE_STAGE.TEEN] &&
+      this.score < STARTING_SCORE[LIFE_STAGE.ADULT]
+    ) {
       this.lifeStage = LIFE_STAGE.TEEN;
-      this.showArmourChance = 0.7;
-    } else if (this.score >= 200 && this.score < 300) {
+    } else if (
+      this.score >= STARTING_SCORE[LIFE_STAGE.ADULT] &&
+      this.score < STARTING_SCORE[LIFE_STAGE.SENIOR]
+    ) {
       this.lifeStage = LIFE_STAGE.ADULT;
       this.showArmourChance = 0.5;
     } else {
