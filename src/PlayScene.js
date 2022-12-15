@@ -118,6 +118,7 @@ class PlayScene extends Phaser.Scene {
         resolution: 5,
       })
       .setOrigin(1, 0)
+      .setDepth(1)
       .setAlpha(0);
 
     this.environment = this.add.group();
@@ -131,9 +132,10 @@ class PlayScene extends Phaser.Scene {
     this.gameOverScreen = this.add
       .container(width / 2, height / 2 - 50)
       .setAlpha(0);
-    this.gameOverText = this.add.image(0, 0, 'game-over');
+    // this.gameOverText = this.add.image(0, 0, 'game-over');
     this.restart = this.add.image(0, 80, 'restart').setInteractive();
-    this.gameOverScreen.add([this.gameOverText, this.restart]);
+    // this.gameOverScreen.add([this.gameOverText, this.restart]);
+    this.gameOverScreen.add([this.restart]);
 
     this.obstacles = this.physics.add.group();
     this.armours = this.physics.add.group();
@@ -152,18 +154,18 @@ class PlayScene extends Phaser.Scene {
       (mainCharacter, obstacle) => {
         this.life--;
         if (this.life <= 0) {
-          this.highScoreText.x = this.scoreText.x - this.scoreText.width - 20;
-
-          const highScore = this.highScoreText.text.substr(
-            this.highScoreText.text.length - 5,
-          );
-          const newScore =
-            Number(this.scoreText.text) > Number(highScore)
-              ? this.scoreText.text
-              : highScore;
-
-          this.highScoreText.setText('HI ' + newScore);
-          this.highScoreText.setAlpha(1);
+          // this.highScoreText.x = this.scoreText.x - this.scoreText.width - 20;
+          //
+          // const highScore = this.highScoreText.text.substr(
+          //   this.highScoreText.text.length - 5,
+          // );
+          // const newScore =
+          //   Number(this.scoreText.text) > Number(highScore)
+          //     ? this.scoreText.text
+          //     : highScore;
+          //
+          // this.highScoreText.setText('HI ' + newScore);
+          // this.highScoreText.setAlpha(1);
           this.physics.pause();
           this.isGameRunning = false;
           this.anims.pauseAll();
@@ -171,12 +173,32 @@ class PlayScene extends Phaser.Scene {
           this.respawnTime = 0;
           this.gameSpeed = 10;
           this.gameOverScreen.setAlpha(1);
+          document.getElementById('leaderboard').style.display = 'flex';
+          fetch('https://api.jsonbin.io/v3/b/639ac545dfc68e59d568b0d6', {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-Access-key':
+                '$2b$10$0O6oL0C705OqpcFPtyDV3exBAO6Ent8kxytVEvOBcshWw.ZnrizLy',
+            },
+            body: JSON.stringify({
+              rankings: [...leaderboard, { name: 'temp', score: this.score }],
+            }),
+          })
+            .then(res => res.json())
+            .then(({ record }) => {
+              const { rankings } = record;
+              leaderboard = rankings;
+            });
+          makeLeaderBoard(
+            [...leaderboard, { name: 'temp', score: this.score }],
+            this.score,
+          );
           this.score = 0;
         } else {
           obstacle.disableBody(true, true);
         }
         this.setLifeText();
-        this.hitSound.play();
       },
       null,
       this,
@@ -347,6 +369,7 @@ class PlayScene extends Phaser.Scene {
       this.isGameRunning = true;
       this.gameOverScreen.setAlpha(0);
       this.anims.resumeAll();
+      document.getElementById('leaderboard').style.display = 'none';
     });
 
     const handleJump = () => {

@@ -1,13 +1,129 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta charset="utf-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
-      body {
-        padding: 200px;
-      }
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+        body {
+            font-family: 'Press Start 2P', cursive;
+            display: flex;
+            justify-content: center;
+        }
+
+        #form {
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #leaderboard {
+            position: absolute;
+            padding: 50px 0;
+            /*display: flex;*/
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            width: 1000px;
+        }
+
+        #leaderboard .big-header {
+            font-size: 24px;
+            letter-spacing: 20px;
+            margin-bottom: 12px;
+        }
+
+        #leaderboard .header {
+            padding: 20px;
+        }
+
+        #leaderboard .score-list {
+            width: 400px;
+        }
+
+        #leaderboard .score-list > div {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            padding: 5px 10px;
+        }
+
+        #leaderboard .score-list > div > div {
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .current {
+            background: rgba(0,0,0,0.6);
+            color: white;
+        }
+
+        .current > div {
+            background: transparent !important;
+        }
     </style>
-  </head>
-  <body>
-  </body>
+</head>
+<body>
+<!--<div id="form">-->
+<!--    <div class="box">-->
+<!--        <div>Game Over</div>-->
+<!--        <label for="name">Name:</label><input id="name"/>-->
+<!--        <label for="score"></label><input readonly id="score"/>-->
+<!--    </div>-->
+<!--</div>-->
+
+<div id="leaderboard">
+    <div class="big-header">
+        GAME OVER
+    </div>
+    <div class="header">
+        HIGH SCORE
+    </div>
+
+    <div class="score-list">
+    </div>
+</div>
+<script>
+    let leaderboard
+
+    const fetchLeaderBoard = () => fetch('https://api.jsonbin.io/v3/b/639ac545dfc68e59d568b0d6', {
+        headers: {
+            "X-Access-key": "$2b$10$0O6oL0C705OqpcFPtyDV3exBAO6Ent8kxytVEvOBcshWw.ZnrizLy"
+        }
+    })
+
+    const makeLeaderBoard = (cache, currentScore) => {
+        document.querySelector('#leaderboard .score-list').innerHTML = ''
+        let currentHit = false
+        const rankings = (cache || leaderboard).sort((a, b) => b.score - a.score).slice(0, 10)
+        for (let [i, item] of rankings.entries()) {
+            leaderboard = rankings
+            const ele = document.createElement('div')
+            if (!currentHit && currentScore === item.score) {
+                ele.className = 'current'
+                currentHit = true
+            }
+            const rank = document.createElement('div')
+            rank.innerText = i + 1
+            ele.appendChild(rank)
+            // const name = document.createElement('div')
+            // name.innerText = item.name
+            // ele.appendChild(name)
+            const score = document.createElement('div')
+            score.innerText = item.score
+            ele.appendChild(score)
+            document.querySelector('#leaderboard .score-list').appendChild(ele)
+        }
+    }
+
+    fetchLeaderBoard().then(res => res.json()).then(({record}) => {
+        const {rankings} = record
+        leaderboard = rankings
+        makeLeaderBoard()
+    })
+</script>
+</body>
 </html>
