@@ -41,13 +41,21 @@ class PreloadScene extends Phaser.Scene {
       frameWidth: 92,
       frameHeight: 77,
     });
+    //
+    // this.load.image('obstacle-1', 'assets/cactuses_small_1.png');
+    // this.load.image('obstacle-2', 'assets/cactuses_small_2.png');
+    // this.load.image('obstacle-3', 'assets/cactuses_small_3.png');
+    // this.load.image('obstacle-4', 'assets/cactuses_big_1.png');
+    // this.load.image('obstacle-5', 'assets/cactuses_big_2.png');
+    // this.load.image('obstacle-6', 'assets/cactuses_big_3.png');
 
-    this.load.image('obstacle-1', 'assets/cactuses_small_1.png');
-    this.load.image('obstacle-2', 'assets/cactuses_small_2.png');
-    this.load.image('obstacle-3', 'assets/cactuses_small_3.png');
-    this.load.image('obstacle-4', 'assets/cactuses_big_1.png');
-    this.load.image('obstacle-5', 'assets/cactuses_big_2.png');
-    this.load.image('obstacle-6', 'assets/cactuses_big_3.png');
+    // can adjust duplicate and adjust the file virus.png & virus_red.png
+    this.load.image('obstacle-1', 'assets/virus_small_1.png');
+    this.load.image('obstacle-2', 'assets/virus_small_2.png');
+    this.load.image('obstacle-3', 'assets/virus_small_3.png');
+    this.load.image('obstacle-4', 'assets/virus_big_1.png');
+    this.load.image('obstacle-5', 'assets/virus_big_2.png');
+    this.load.image('obstacle-6', 'assets/virus_big_3.png');
   }
 
   create() {
