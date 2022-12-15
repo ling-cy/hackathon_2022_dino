@@ -20,6 +20,7 @@ class PlayScene extends Phaser.Scene {
     this.respawnTime = 0;
     this.score = 0;
     this.life = 1;
+    this.showArmourProbability = 0.9;
     this.lifeStage = LIFE_STAGE.KID;
 
     this.jumpSound = this.sound.add('jump', { volume: 0.2 });
@@ -97,7 +98,7 @@ class PlayScene extends Phaser.Scene {
     this.physics.add.collider(
       this.mainCharacter,
       this.obstacles,
-      (dino, obstacle) => {
+      (mainCharacter, obstacle) => {
         this.life--;
         if (this.life <= 0) {
           this.highScoreText.x = this.scoreText.x - this.scoreText.width - 20;
@@ -131,9 +132,9 @@ class PlayScene extends Phaser.Scene {
     );
 
     this.physics.add.overlap(
-      this.dino,
+      this.mainCharacter,
       this.armours,
-      (dino, armour) => {
+      (mainCharacter, armour) => {
         this.life++;
         armour.disableBody(true, true);
         this.setLifeText();
@@ -350,10 +351,9 @@ class PlayScene extends Phaser.Scene {
   }
 
   placeArmour() {
-    const hasArmour = Math.floor(Math.random() * 1000) / 900; //TODO: lesser when dino older
     const distance = Phaser.Math.Between(300, 400);
 
-    if (hasArmour >= 1) {
+    if (Math.random() <= this.showArmourProbability) {
       let armour;
       armour = this.armours
         .create(
@@ -376,12 +376,16 @@ class PlayScene extends Phaser.Scene {
   update_lifeStage() {
     if (this.score >= 0 && this.score < 100) {
       this.lifeStage = LIFE_STAGE.KID;
+      this.showArmourChance = 0.9;
     } else if (this.score >= 100 && this.score < 200) {
       this.lifeStage = LIFE_STAGE.TEEN;
+      this.showArmourChance = 0.7;
     } else if (this.score >= 200 && this.score < 300) {
       this.lifeStage = LIFE_STAGE.ADULT;
+      this.showArmourChance = 0.5;
     } else {
       this.lifeStage = LIFE_STAGE.SENIOR;
+      this.showArmourChance = 0.3;
     }
   }
 
