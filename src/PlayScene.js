@@ -223,7 +223,7 @@ class PlayScene extends Phaser.Scene {
       this.anims.resumeAll();
     });
 
-    this.input.keyboard.on('keydown_SPACE', () => {
+    const handleJump = () => {
       if (!this.dino.body.onFloor() || this.dino.body.velocity.x > 0) {
         return;
       }
@@ -233,7 +233,11 @@ class PlayScene extends Phaser.Scene {
       this.dino.body.offset.y = 0;
       this.dino.setVelocityY(-1600);
       this.dino.setTexture('dino', 0);
-    });
+    };
+
+    this.input.on('pointerdown', handleJump);
+
+    this.input.keyboard.on('keydown_SPACE', handleJump);
 
     this.input.keyboard.on('keydown_DOWN', () => {
       if (!this.dino.body.onFloor() || !this.isGameRunning) {
