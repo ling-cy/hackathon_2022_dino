@@ -239,23 +239,23 @@ class PlayScene extends Phaser.Scene {
 
     this.input.keyboard.on('keydown_SPACE', handleJump);
 
-    this.input.keyboard.on('keydown_DOWN', () => {
-      if (!this.dino.body.onFloor() || !this.isGameRunning) {
-        return;
-      }
+    // this.input.keyboard.on('keydown_DOWN', () => {
+    //   if (!this.dino.body.onFloor() || !this.isGameRunning) {
+    //     return;
+    //   }
 
-      this.dino.body.height = 58;
-      this.dino.body.offset.y = 34;
-    });
+    //   this.dino.body.height = 58;
+    //   this.dino.body.offset.y = 34;
+    // });
 
-    this.input.keyboard.on('keyup_DOWN', () => {
-      if (this.score !== 0 && !this.isGameRunning) {
-        return;
-      }
+    // this.input.keyboard.on('keyup_DOWN', () => {
+    //   if (this.score !== 0 && !this.isGameRunning) {
+    //     return;
+    //   }
 
-      this.dino.body.height = 92;
-      this.dino.body.offset.y = 0;
-    });
+    //   this.dino.body.height = 92;
+    //   this.dino.body.offset.y = 0;
+    // });
   }
 
   placeObstacle() {
