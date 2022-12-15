@@ -335,10 +335,8 @@ class PlayScene extends Phaser.Scene {
 
     if (this.mainCharacter.body.deltaAbsY() > 0) {
       this.mainCharacter.anims.stop();
-      this.mainCharacter.setTexture('kid-run', 0);
-    }
-
-    if (this.lifeStage === LIFE_STAGE.TEEN) {
+      this.mainCharacter.setTexture(`${this.lifeStage}-run`, 0);
+    } else {
       this.mainCharacter.play(`${this.lifeStage}-run`, true);
     }
   }
