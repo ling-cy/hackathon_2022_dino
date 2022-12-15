@@ -11,8 +11,7 @@ class PreloadScene extends Phaser.Scene {
     this.load.audio('reach', 'assets/reach.m4a');
 
     this.load.image('ground', 'assets/ground.png');
-    this.load.image('boy-idle', 'assets/boy-idle.png');
-    this.load.image('boy-hurt', 'assets/boy-hurt.png');
+
     this.load.image('restart', 'assets/restart.png');
     this.load.image('game-over', 'assets/game-over.png');
     this.load.image('cloud', 'assets/cloud.png');
@@ -27,16 +26,41 @@ class PreloadScene extends Phaser.Scene {
       frameHeight: 40,
     });
 
-    this.load.spritesheet('dino', 'assets/boy-run.png', {
+    this.load.image('kid-idle', 'assets/kid-idle.png');
+    this.load.image('kid-hurt', 'assets/kid-hurt.png');
+    this.load.spritesheet('kid-texture', 'assets/kid-run.png', {
       frameWidth: 88,
       frameHeight: 94,
     });
 
-    this.load.spritesheet('dino-down', 'assets/dino-down.png', {
-      frameWidth: 118,
+    // TODO: change assets to teen
+    this.load.image('teen-idle', 'assets/dino-idle.png');
+    this.load.image('teen-hurt', 'assets/dino-hurt.png');
+    this.load.spritesheet('teen-texture', 'assets/dino-texture.png', {
+      frameWidth: 88,
       frameHeight: 94,
     });
 
+    // TODO: change assets to adult
+    this.load.image('adult-idle', 'assets/dino-idle.png');
+    this.load.image('adult-hurt', 'assets/dino-hurt.png');
+    this.load.spritesheet('adult-texture', 'assets/dino-texture.png', {
+      frameWidth: 88,
+      frameHeight: 94,
+    });
+
+    // TODO: change assets to senior
+    this.load.image('senior-idle', 'assets/dino-idle.png');
+    this.load.image('senior-hurt', 'assets/dino-hurt.png');
+    this.load.spritesheet('senior-texture', 'assets/dino-texture.png', {
+      frameWidth: 88,
+      frameHeight: 94,
+    });
+
+    // this.load.spritesheet('dino-down', 'assets/dino-down.png', {
+    //   frameWidth: 118,
+    //   frameHeight: 94,
+    // });
     // this.load.spritesheet('enemy-bird', 'assets/enemy-bird.png', {
     //   frameWidth: 92,
     //   frameHeight: 77,
