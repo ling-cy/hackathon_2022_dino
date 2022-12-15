@@ -106,7 +106,7 @@
                         '$2b$10$0O6oL0C705OqpcFPtyDV3exBAO6Ent8kxytVEvOBcshWw.ZnrizLy',
                 },
                 body: JSON.stringify({
-                    rankings: [...rankings, {name: 'temp', score}],
+                    rankings: [...rankings, {name: 'temp', score}].sort((a, b) => b.score - a.score).slice(0, 10),
                 }),
             })
         })
