@@ -103,7 +103,7 @@ class PlayScene extends Phaser.Scene {
         this.physics.pause();
         this.isGameRunning = false;
         this.anims.pauseAll();
-        this.mainCharacter.setTexture('kid-hurt');
+        this.mainCharacter.setTexture(`${this.lifeStage}-hurt`);
         this.respawnTime = 0;
         this.gameSpeed = INITIAL_GAME_SPEED;
         this.gameOverScreen.setAlpha(1);
@@ -134,7 +134,7 @@ class PlayScene extends Phaser.Scene {
           callbackScope: this,
           callback: () => {
             this.mainCharacter.setVelocityX(80);
-            this.mainCharacter.play('kid-run', 1);
+            this.mainCharacter.play(`${this.lifeStage}-run`, 1);
 
             if (this.ground.width < width) {
               this.ground.width += 17 * 2;
@@ -245,7 +245,7 @@ class PlayScene extends Phaser.Scene {
       this.mainCharacter.body.height = 92;
       this.mainCharacter.body.offset.y = 0;
       this.mainCharacter.setVelocityY(-1600);
-      this.mainCharacter.setTexture('kid-run', 0);
+      this.mainCharacter.setTexture(`${this.lifeStage}-run`, 0);
     };
 
     this.input.on('pointerdown', handleJump);
@@ -285,21 +285,13 @@ class PlayScene extends Phaser.Scene {
   }
 
   update_lifeStage() {
-    if (
-      this.score >= 300 &&
-      this.score < 700 &&
-      this.lifeStage === LIFE_STAGE.KID
-    ) {
+    if (this.score >= 0 && this.score < 100) {
+      this.lifeStage = LIFE_STAGE.KID;
+    } else if (this.score >= 100 && this.score < 200) {
       this.lifeStage = LIFE_STAGE.TEEN;
-    }
-    if (
-      this.score >= 700 &&
-      this.score < 1100 &&
-      this.lifeStage === LIFE_STAGE.TEEN
-    ) {
+    } else if (this.score >= 200 && this.score < 300) {
       this.lifeStage = LIFE_STAGE.ADULT;
-    }
-    if (this.score >= 1100 && this.lifeStage === LIFE_STAGE.ADULT) {
+    } else {
       this.lifeStage = LIFE_STAGE.SENIOR;
     }
   }
