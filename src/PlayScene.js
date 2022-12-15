@@ -33,7 +33,7 @@ class PlayScene extends Phaser.Scene {
       .tileSprite(0, height, 88, 26, 'ground')
       .setOrigin(0, 1);
     this.mainCharacter = this.physics.add
-      .sprite(0, height, 'kid-idle')
+      .sprite(0, height, `${this.lifeStage}-idle`)
       .setCollideWorldBounds(true)
       .setGravityY(5000)
       .setBodySize(44, 92)
@@ -103,7 +103,7 @@ class PlayScene extends Phaser.Scene {
         this.physics.pause();
         this.isGameRunning = false;
         this.anims.pauseAll();
-        this.mainCharacter.setTexture('kid-hurt');
+        this.mainCharacter.setTexture(`${this.lifeStage}-hurt`);
         this.respawnTime = 0;
         this.gameSpeed = INITIAL_GAME_SPEED;
         this.gameOverScreen.setAlpha(1);
@@ -134,7 +134,7 @@ class PlayScene extends Phaser.Scene {
           callbackScope: this,
           callback: () => {
             this.mainCharacter.setVelocityX(80);
-            this.mainCharacter.play('kid-run', 1);
+            this.mainCharacter.play(`${this.lifeStage}-run`, 1);
 
             if (this.ground.width < width) {
               this.ground.width += 17 * 2;
@@ -159,16 +159,39 @@ class PlayScene extends Phaser.Scene {
   initAnims() {
     this.anims.create({
       key: 'kid-run',
-      frames: this.anims.generateFrameNumbers('kid-run', { start: 2, end: 3 }),
+      frames: this.anims.generateFrameNumbers('kid-texture', {
+        start: 2,
+        end: 3,
+      }),
       frameRate: 10,
       repeat: -1,
     });
 
     this.anims.create({
       key: 'teen-run',
-      frames: this.anims.generateFrameNumbers('teen-run', {
-        start: 0,
-        end: 1,
+      frames: this.anims.generateFrameNumbers('teen-texture', {
+        start: 2,
+        end: 3,
+      }),
+      frameRate: 10,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: 'adult-run',
+      frames: this.anims.generateFrameNumbers('adult-texture', {
+        start: 2,
+        end: 3,
+      }),
+      frameRate: 10,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: 'senior-run',
+      frames: this.anims.generateFrameNumbers('senior-texture', {
+        start: 2,
+        end: 3,
       }),
       frameRate: 10,
       repeat: -1,
@@ -245,7 +268,7 @@ class PlayScene extends Phaser.Scene {
       this.mainCharacter.body.height = 92;
       this.mainCharacter.body.offset.y = 0;
       this.mainCharacter.setVelocityY(-1600);
-      this.mainCharacter.setTexture('kid-run', 0);
+      this.mainCharacter.setTexture(`${this.lifeStage}-texture`, 0);
     };
 
     this.input.on('pointerdown', handleJump);
@@ -335,7 +358,7 @@ class PlayScene extends Phaser.Scene {
 
     if (this.mainCharacter.body.deltaAbsY() > 0) {
       this.mainCharacter.anims.stop();
-      this.mainCharacter.setTexture(`${this.lifeStage}-run`, 0);
+      this.mainCharacter.setTexture(`${this.lifeStage}-texture`, 0);
     } else {
       this.mainCharacter.play(`${this.lifeStage}-run`, true);
     }
