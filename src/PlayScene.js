@@ -369,6 +369,7 @@ class PlayScene extends Phaser.Scene {
     };
 
     this.input.on('pointerdown', handleJump);
+    this.input.on('pointerdownoutside', handleJump);
 
     this.input.keyboard.on('keydown_SPACE', handleJump);
   }
