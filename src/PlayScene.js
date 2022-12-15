@@ -174,17 +174,7 @@ class PlayScene extends Phaser.Scene {
           this.gameSpeed = 10;
           this.gameOverScreen.setAlpha(1);
           document.getElementById('leaderboard').style.display = 'flex';
-          fetch('https://api.jsonbin.io/v3/b/639ac545dfc68e59d568b0d6', {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json',
-              'X-Access-key':
-                '$2b$10$0O6oL0C705OqpcFPtyDV3exBAO6Ent8kxytVEvOBcshWw.ZnrizLy',
-            },
-            body: JSON.stringify({
-              rankings: [...leaderboard, { name: 'temp', score: this.score }],
-            }),
-          })
+          updateLeaderBoard(this.score)
             .then(res => res.json())
             .then(({ record }) => {
               const { rankings } = record;
