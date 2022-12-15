@@ -166,7 +166,7 @@ class PlayScene extends Phaser.Scene {
 
     this.anims.create({
       key: 'teen-run',
-      frames: this.anims.generateFrameNumbers('dino-down', {
+      frames: this.anims.generateFrameNumbers('teen-run', {
         start: 0,
         end: 1,
       }),
@@ -245,7 +245,7 @@ class PlayScene extends Phaser.Scene {
       this.mainCharacter.body.height = 92;
       this.mainCharacter.body.offset.y = 0;
       this.mainCharacter.setVelocityY(-1600);
-      this.mainCharacter.setTexture('dino', 0);
+      this.mainCharacter.setTexture('kid-run', 0);
     };
 
     this.input.on('pointerdown', handleJump);
@@ -284,11 +284,7 @@ class PlayScene extends Phaser.Scene {
     obstacle.setImmovable();
   }
 
-  update(time, delta) {
-    if (!this.isGameRunning) {
-      return;
-    }
-
+  update_lifeStage() {
     if (
       this.score >= 300 &&
       this.score < 700 &&
@@ -306,6 +302,14 @@ class PlayScene extends Phaser.Scene {
     if (this.score >= 1100 && this.lifeStage === LIFE_STAGE.ADULT) {
       this.lifeStage = LIFE_STAGE.SENIOR;
     }
+  }
+
+  update(time, delta) {
+    if (!this.isGameRunning) {
+      return;
+    }
+
+    this.update_lifeStage();
 
     this.ground.tilePositionX += this.gameSpeed;
     Phaser.Actions.IncX(this.obstacles.getChildren(), -this.gameSpeed);
@@ -331,7 +335,7 @@ class PlayScene extends Phaser.Scene {
 
     if (this.mainCharacter.body.deltaAbsY() > 0) {
       this.mainCharacter.anims.stop();
-      this.mainCharacter.setTexture('dino', 0);
+      this.mainCharacter.setTexture('kid-run', 0);
     }
 
     if (this.lifeStage === LIFE_STAGE.TEEN) {
