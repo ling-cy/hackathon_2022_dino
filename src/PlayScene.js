@@ -308,21 +308,13 @@ class PlayScene extends Phaser.Scene {
   }
 
   update_lifeStage() {
-    if (
-      this.score >= 300 &&
-      this.score < 700 &&
-      this.lifeStage === LIFE_STAGE.KID
-    ) {
+    if (this.score >= 0 && this.score < 100) {
+      this.lifeStage = LIFE_STAGE.KID;
+    } else if (this.score >= 100 && this.score < 200) {
       this.lifeStage = LIFE_STAGE.TEEN;
-    }
-    if (
-      this.score >= 700 &&
-      this.score < 1100 &&
-      this.lifeStage === LIFE_STAGE.TEEN
-    ) {
+    } else if (this.score >= 200 && this.score < 300) {
       this.lifeStage = LIFE_STAGE.ADULT;
-    }
-    if (this.score >= 1100 && this.lifeStage === LIFE_STAGE.ADULT) {
+    } else {
       this.lifeStage = LIFE_STAGE.SENIOR;
     }
   }
