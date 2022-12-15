@@ -9,18 +9,18 @@ const LIFE_STAGE = {
 
 // this const determine how often the obstacle being created
 const OBSTACLES_CONSTANT = {
-  [LIFE_STAGE.KID]: 0.16,
-  [LIFE_STAGE.TEEN]: 0.1,
-  [LIFE_STAGE.ADULT]: 0.08,
-  [LIFE_STAGE.SENIOR]: 0.2,
+  [LIFE_STAGE.KID]: 0.24,
+  [LIFE_STAGE.TEEN]: 0.2,
+  [LIFE_STAGE.ADULT]: 0.16,
+  [LIFE_STAGE.SENIOR]: 0.4,
 };
 
 // this const determine the distance of each obstacles
 const OBSTACLES_DISTANCE = {
-  [LIFE_STAGE.KID]: 400,
-  [LIFE_STAGE.TEEN]: 500,
-  [LIFE_STAGE.ADULT]: 600,
-  [LIFE_STAGE.SENIOR]: 400,
+  [LIFE_STAGE.KID]: 250,
+  [LIFE_STAGE.TEEN]: 300,
+  [LIFE_STAGE.ADULT]: 450,
+  [LIFE_STAGE.SENIOR]: 200,
 };
 
 // this const determine how often the armour being created
@@ -40,22 +40,22 @@ const ARMOUR_DISTANCE = {
 
 const STARTING_SCORE = {
   [LIFE_STAGE.KID]: 0,
-  [LIFE_STAGE.TEEN]: 100,
-  [LIFE_STAGE.ADULT]: 200,
-  [LIFE_STAGE.SENIOR]: 300,
+  [LIFE_STAGE.TEEN]: 150,
+  [LIFE_STAGE.ADULT]: 400,
+  [LIFE_STAGE.SENIOR]: 700,
 };
 
 const GAME_SPEED = {
-  [LIFE_STAGE.KID]: 5,
+  [LIFE_STAGE.KID]: 2,
   [LIFE_STAGE.TEEN]: 8,
   [LIFE_STAGE.ADULT]: 13,
   [LIFE_STAGE.SENIOR]: 5,
 };
 
 const GAME_ACCELERATION = {
-  [LIFE_STAGE.KID]: 0.01,
+  [LIFE_STAGE.KID]: 0.04,
   [LIFE_STAGE.TEEN]: 0.02,
-  [LIFE_STAGE.ADULT]: 0.03,
+  [LIFE_STAGE.ADULT]: 0.01,
   [LIFE_STAGE.SENIOR]: 0.01,
 };
 
@@ -171,7 +171,7 @@ class PlayScene extends Phaser.Scene {
           this.anims.pauseAll();
           this.mainCharacter.setTexture(`${this.lifeStage}-hurt`);
           this.respawnTime = 0;
-          this.gameSpeed = 10;
+          this.gameSpeed = GAME_SPEED[this.lifeStage];
           this.gameOverScreen.setAlpha(1);
           document.getElementById('leaderboard').style.display = 'flex';
           updateLeaderBoard(this.score)
@@ -370,7 +370,6 @@ class PlayScene extends Phaser.Scene {
 
     this.input.on('pointerdown', handleJump);
     this.input.on('pointerdownoutside', handleJump);
-
     this.input.keyboard.on('keydown_SPACE', handleJump);
   }
 
@@ -434,18 +433,26 @@ class PlayScene extends Phaser.Scene {
       this.lifeStage = LIFE_STAGE.KID;
     } else if (
       this.score >= STARTING_SCORE[LIFE_STAGE.TEEN] &&
-      this.score < STARTING_SCORE[LIFE_STAGE.ADULT]
+      this.score < STARTING_SCORE[LIFE_STAGE.ADULT] &&
+      this.lifeStage !== LIFE_STAGE.TEEN
     ) {
       this.lifeStage = LIFE_STAGE.TEEN;
+      this.gameSpeed = GAME_SPEED[this.lifeStage];
     } else if (
       this.score >= STARTING_SCORE[LIFE_STAGE.ADULT] &&
-      this.score < STARTING_SCORE[LIFE_STAGE.SENIOR]
+      this.score < STARTING_SCORE[LIFE_STAGE.SENIOR] &&
+      this.lifeStage !== LIFE_STAGE.ADULT
     ) {
       this.lifeStage = LIFE_STAGE.ADULT;
       this.showArmourChance = 0.5;
-    } else {
+      this.gameSpeed = GAME_SPEED[this.lifeStage];
+    } else if (
+      this.score >= STARTING_SCORE[LIFE_STAGE.SENIOR] &&
+      this.lifeStage !== LIFE_STAGE.SENIOR
+    ) {
       this.lifeStage = LIFE_STAGE.SENIOR;
       this.showArmourChance = 0.3;
+      this.gameSpeed = GAME_SPEED[this.lifeStage];
     }
   }
 
