@@ -159,7 +159,7 @@ class PlayScene extends Phaser.Scene {
   initAnims() {
     this.anims.create({
       key: 'kid-run',
-      frames: this.anims.generateFrameNumbers('dino', { start: 2, end: 3 }),
+      frames: this.anims.generateFrameNumbers('kid-run', { start: 2, end: 3 }),
       frameRate: 10,
       repeat: -1,
     });
