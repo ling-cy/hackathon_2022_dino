@@ -7,6 +7,7 @@ const LIFE_STAGE = {
   SENIOR: 'senior',
 };
 
+// this const determine how often the obstacle being created
 const OBSTACLES_CONSTANT = {
   [LIFE_STAGE.KID]: 0.16,
   [LIFE_STAGE.TEEN]: 0.1,
@@ -14,6 +15,7 @@ const OBSTACLES_CONSTANT = {
   [LIFE_STAGE.SENIOR]: 0.2,
 };
 
+// this const determine the distance of each obstacles
 const OBSTACLES_DISTANCE = {
   [LIFE_STAGE.KID]: 400,
   [LIFE_STAGE.TEEN]: 500,
