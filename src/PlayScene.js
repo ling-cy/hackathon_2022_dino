@@ -25,10 +25,10 @@ const OBSTACLES_DISTANCE = {
 
 // this const determine how often the armour being created
 const ARMOUR_CONSTANT = {
-  [LIFE_STAGE.KID]: 0.7,
-  [LIFE_STAGE.TEEN]: 0.5,
-  [LIFE_STAGE.ADULT]: 0.3,
-  [LIFE_STAGE.SENIOR]: 0.1,
+  [LIFE_STAGE.KID]: 0.3,
+  [LIFE_STAGE.TEEN]: 0.2,
+  [LIFE_STAGE.ADULT]: 0.1,
+  [LIFE_STAGE.SENIOR]: 0.01,
 };
 
 const ARMOUR_DISTANCE = {
@@ -299,16 +299,6 @@ class PlayScene extends Phaser.Scene {
       frameRate: 6,
       repeat: -1,
     });
-
-    this.anims.create({
-      key: 'armour',
-      frames: this.anims.generateFrameNumbers('armour', {
-        start: 0,
-        end: 1,
-      }),
-      frameRate: 6,
-      repeat: -1,
-    });
   }
 
   handleScore() {
@@ -416,7 +406,7 @@ class PlayScene extends Phaser.Scene {
   }
 
   placeArmour() {
-    if (Math.random() <= ARMOUR_CONSTANT[this.lifeStage]) {
+    if (Math.random() < ARMOUR_CONSTANT[this.lifeStage]) {
       let armour;
       armour = this.armours
         .create(
@@ -425,7 +415,6 @@ class PlayScene extends Phaser.Scene {
           'armour',
         )
         .setOrigin(0, 1);
-      armour.play('armour', 1);
       armour.body.offset.y = +10;
       armour.setImmovable();
     }
