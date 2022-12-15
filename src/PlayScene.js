@@ -7,6 +7,22 @@ const LIFE_STAGE = {
   SENIOR: 'senior',
 };
 
+// this const determine how often the obstacle being created
+const OBSTACLES_CONSTANT = {
+  [LIFE_STAGE.KID]: 0.16,
+  [LIFE_STAGE.TEEN]: 0.1,
+  [LIFE_STAGE.ADULT]: 0.08,
+  [LIFE_STAGE.SENIOR]: 0.2,
+};
+
+// this const determine the distance of each obstacles
+const OBSTACLES_DISTANCE = {
+  [LIFE_STAGE.KID]: 400,
+  [LIFE_STAGE.TEEN]: 500,
+  [LIFE_STAGE.ADULT]: 600,
+  [LIFE_STAGE.SENIOR]: 400,
+};
+
 const INITIAL_GAME_SPEED = 10;
 class PlayScene extends Phaser.Scene {
   constructor() {
@@ -321,7 +337,8 @@ class PlayScene extends Phaser.Scene {
 
   placeObstacle() {
     const obstacleNum = Math.floor(Math.random() * 7) + 1;
-    const distance = Phaser.Math.Between(600, 900);
+    const distanceBase = OBSTACLES_DISTANCE[this.lifeStage];
+    const distance = Phaser.Math.Between(distanceBase, distanceBase * 1.5);
 
     let obstacle;
     if (obstacleNum > 6) {
@@ -401,7 +418,8 @@ class PlayScene extends Phaser.Scene {
     Phaser.Actions.IncX(this.armours.getChildren(), -this.gameSpeed);
     Phaser.Actions.IncX(this.environment.getChildren(), -0.5);
 
-    this.respawnTime += delta * this.gameSpeed * 0.08;
+    this.respawnTime +=
+      delta * this.gameSpeed * OBSTACLES_CONSTANT[this.lifeStage];
     if (this.respawnTime >= 1500) {
       this.placeObstacle();
       this.placeArmour();
