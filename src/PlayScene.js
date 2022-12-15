@@ -1,5 +1,13 @@
 import Phaser from 'phaser';
 
+const LIFE_STAGE = {
+  KID: 'kid',
+  TEEN: 'teen',
+  ADULT: 'adult',
+  SENIOR: 'senior',
+};
+
+const INITIAL_GAME_SPEED = 10;
 class PlayScene extends Phaser.Scene {
   constructor() {
     super('PlayScene');
@@ -7,10 +15,11 @@ class PlayScene extends Phaser.Scene {
 
   create() {
     const { height, width } = this.game.config;
-    this.gameSpeed = 10;
+    this.gameSpeed = INITIAL_GAME_SPEED;
     this.isGameRunning = false;
     this.respawnTime = 0;
     this.score = 0;
+    this.lifeStage = LIFE_STAGE.KID;
 
     this.jumpSound = this.sound.add('jump', { volume: 0.2 });
     this.hitSound = this.sound.add('hit', { volume: 0.2 });
@@ -96,7 +105,7 @@ class PlayScene extends Phaser.Scene {
         this.anims.pauseAll();
         this.dino.setTexture('boy-hurt');
         this.respawnTime = 0;
-        this.gameSpeed = 10;
+        this.gameSpeed = INITIAL_GAME_SPEED;
         this.gameOverScreen.setAlpha(1);
         this.score = 0;
         this.hitSound.play();
@@ -227,6 +236,7 @@ class PlayScene extends Phaser.Scene {
       if (!this.dino.body.onFloor() || this.dino.body.velocity.x > 0) {
         return;
       }
+      console.log(this.lifeStage);
 
       this.jumpSound.play();
       this.dino.body.height = 92;
@@ -292,6 +302,24 @@ class PlayScene extends Phaser.Scene {
   update(time, delta) {
     if (!this.isGameRunning) {
       return;
+    }
+
+    if (
+      this.score >= 300 &&
+      this.score < 700 &&
+      this.lifeStage === LIFE_STAGE.KID
+    ) {
+      this.lifeStage = LIFE_STAGE.TEEN;
+    }
+    if (
+      this.score >= 700 &&
+      this.score < 1100 &&
+      this.lifeStage === LIFE_STAGE.TEEN
+    ) {
+      this.lifeStage = LIFE_STAGE.ADULT;
+    }
+    if (this.score >= 1100 && this.lifeStage === LIFE_STAGE.ADULT) {
+      this.lifeStage = LIFE_STAGE.SENIOR;
     }
 
     this.ground.tilePositionX += this.gameSpeed;
