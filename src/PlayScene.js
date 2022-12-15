@@ -24,7 +24,7 @@ class PlayScene extends Phaser.Scene {
       .tileSprite(0, height, 88, 26, 'ground')
       .setOrigin(0, 1);
     this.dino = this.physics.add
-      .sprite(0, height, 'dino-idle')
+      .sprite(0, height, 'boy-idle')
       .setCollideWorldBounds(true)
       .setGravityY(5000)
       .setBodySize(44, 92)
@@ -94,7 +94,7 @@ class PlayScene extends Phaser.Scene {
         this.physics.pause();
         this.isGameRunning = false;
         this.anims.pauseAll();
-        this.dino.setTexture('dino-hurt');
+        this.dino.setTexture('boy-hurt');
         this.respawnTime = 0;
         this.gameSpeed = 10;
         this.gameOverScreen.setAlpha(1);
@@ -125,7 +125,7 @@ class PlayScene extends Phaser.Scene {
           callbackScope: this,
           callback: () => {
             this.dino.setVelocityX(80);
-            this.dino.play('dino-run', 1);
+            this.dino.play('boy-run', 1);
 
             if (this.ground.width < width) {
               this.ground.width += 17 * 2;
@@ -149,7 +149,7 @@ class PlayScene extends Phaser.Scene {
 
   initAnims() {
     this.anims.create({
-      key: 'dino-run',
+      key: 'boy-run',
       frames: this.anims.generateFrameNumbers('dino', { start: 2, end: 3 }),
       frameRate: 10,
       repeat: -1,
@@ -322,7 +322,7 @@ class PlayScene extends Phaser.Scene {
     } else {
       this.dino.body.height <= 58
         ? this.dino.play('dino-down-anim', true)
-        : this.dino.play('dino-run', true);
+        : this.dino.play('boy-run', true);
     }
   }
 }
