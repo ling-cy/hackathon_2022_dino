@@ -64,7 +64,7 @@ class PlayScene extends Phaser.Scene {
     this.restart = this.add.image(0, 80, 'restart').setInteractive();
     this.gameOverScreen.add([this.gameOverText, this.restart]);
 
-    this.obsticles = this.physics.add.group();
+    this.obstacles = this.physics.add.group();
 
     this.initAnims();
     this.initStartTrigger();
@@ -76,7 +76,7 @@ class PlayScene extends Phaser.Scene {
   initColliders() {
     this.physics.add.collider(
       this.dino,
-      this.obsticles,
+      this.obstacles,
       () => {
         this.highScoreText.x = this.scoreText.x - this.scoreText.width - 20;
 
@@ -217,7 +217,7 @@ class PlayScene extends Phaser.Scene {
       this.dino.body.height = 92;
       this.dino.body.offset.y = 0;
       this.physics.resume();
-      this.obsticles.clear(true, true);
+      this.obstacles.clear(true, true);
       this.isGameRunning = true;
       this.gameOverScreen.setAlpha(0);
       this.anims.resumeAll();
@@ -258,35 +258,35 @@ class PlayScene extends Phaser.Scene {
     });
   }
 
-  placeObsticle() {
-    const obsticleNum = Math.floor(Math.random() * 7) + 1;
+  placeObstacle() {
+    const obstacleNum = Math.floor(Math.random() * 7) + 1;
     const distance = Phaser.Math.Between(600, 900);
 
-    let obsticle;
-    if (obsticleNum > 6) {
+    let obstacle;
+    if (obstacleNum > 6) {
       const enemyHeight = [20, 50];
-      obsticle = this.obsticles
+      obstacle = this.obstacles
         .create(
           this.game.config.width + distance,
           this.game.config.height - enemyHeight[Math.floor(Math.random() * 2)],
           `enemy-bird`,
         )
         .setOrigin(0, 1);
-      obsticle.play('enemy-dino-fly', 1);
-      obsticle.body.height = obsticle.body.height / 1.5;
+      obstacle.play('enemy-dino-fly', 1);
+      obstacle.body.height = obstacle.body.height / 1.5;
     } else {
-      obsticle = this.obsticles
+      obstacle = this.obstacles
         .create(
           this.game.config.width + distance,
           this.game.config.height,
-          `obsticle-${obsticleNum}`,
+          `obstacle-${obstacleNum}`,
         )
         .setOrigin(0, 1);
 
-      obsticle.body.offset.y = +10;
+      obstacle.body.offset.y = +10;
     }
 
-    obsticle.setImmovable();
+    obstacle.setImmovable();
   }
 
   update(time, delta) {
@@ -295,18 +295,18 @@ class PlayScene extends Phaser.Scene {
     }
 
     this.ground.tilePositionX += this.gameSpeed;
-    Phaser.Actions.IncX(this.obsticles.getChildren(), -this.gameSpeed);
+    Phaser.Actions.IncX(this.obstacles.getChildren(), -this.gameSpeed);
     Phaser.Actions.IncX(this.environment.getChildren(), -0.5);
 
     this.respawnTime += delta * this.gameSpeed * 0.08;
     if (this.respawnTime >= 1500) {
-      this.placeObsticle();
+      this.placeObstacle();
       this.respawnTime = 0;
     }
 
-    this.obsticles.getChildren().forEach(obsticle => {
-      if (obsticle.getBounds().right < 0) {
-        this.obsticles.killAndHide(obsticle);
+    this.obstacles.getChildren().forEach(obstacle => {
+      if (obstacle.getBounds().right < 0) {
+        this.obstacles.killAndHide(obstacle);
       }
     });
 
