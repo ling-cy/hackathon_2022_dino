@@ -32,7 +32,7 @@ class PlayScene extends Phaser.Scene {
     this.ground = this.add
       .tileSprite(0, height, 88, 26, 'ground')
       .setOrigin(0, 1);
-    this.dino = this.physics.add
+    this.mainCharacter = this.physics.add
       .sprite(0, height, 'boy-idle')
       .setCollideWorldBounds(true)
       .setGravityY(5000)
@@ -84,7 +84,7 @@ class PlayScene extends Phaser.Scene {
 
   initColliders() {
     this.physics.add.collider(
-      this.dino,
+      this.mainCharacter,
       this.obstacles,
       () => {
         this.highScoreText.x = this.scoreText.x - this.scoreText.width - 20;
@@ -103,7 +103,7 @@ class PlayScene extends Phaser.Scene {
         this.physics.pause();
         this.isGameRunning = false;
         this.anims.pauseAll();
-        this.dino.setTexture('boy-hurt');
+        this.mainCharacter.setTexture('boy-hurt');
         this.respawnTime = 0;
         this.gameSpeed = INITIAL_GAME_SPEED;
         this.gameOverScreen.setAlpha(1);
@@ -119,7 +119,7 @@ class PlayScene extends Phaser.Scene {
     const { width, height } = this.game.config;
     this.physics.add.overlap(
       this.startTrigger,
-      this.dino,
+      this.mainCharacter,
       () => {
         if (this.startTrigger.y === 10) {
           this.startTrigger.body.reset(0, height);
@@ -133,8 +133,8 @@ class PlayScene extends Phaser.Scene {
           loop: true,
           callbackScope: this,
           callback: () => {
-            this.dino.setVelocityX(80);
-            this.dino.play('boy-run', 1);
+            this.mainCharacter.setVelocityX(80);
+            this.mainCharacter.play('boy-run', 1);
 
             if (this.ground.width < width) {
               this.ground.width += 17 * 2;
@@ -143,7 +143,7 @@ class PlayScene extends Phaser.Scene {
             if (this.ground.width >= 1000) {
               this.ground.width = width;
               this.isGameRunning = true;
-              this.dino.setVelocityX(0);
+              this.mainCharacter.setVelocityX(0);
               this.scoreText.setAlpha(1);
               this.environment.setAlpha(1);
               startEvent.remove();
@@ -222,9 +222,9 @@ class PlayScene extends Phaser.Scene {
 
   handleInputs() {
     this.restart.on('pointerdown', () => {
-      this.dino.setVelocityY(0);
-      this.dino.body.height = 92;
-      this.dino.body.offset.y = 0;
+      this.mainCharacter.setVelocityY(0);
+      this.mainCharacter.body.height = 92;
+      this.mainCharacter.body.offset.y = 0;
       this.physics.resume();
       this.obstacles.clear(true, true);
       this.isGameRunning = true;
@@ -233,16 +233,19 @@ class PlayScene extends Phaser.Scene {
     });
 
     const handleJump = () => {
-      if (!this.dino.body.onFloor() || this.dino.body.velocity.x > 0) {
+      if (
+        !this.mainCharacter.body.onFloor() ||
+        this.mainCharacter.body.velocity.x > 0
+      ) {
         return;
       }
       console.log(this.lifeStage);
 
       this.jumpSound.play();
-      this.dino.body.height = 92;
-      this.dino.body.offset.y = 0;
-      this.dino.setVelocityY(-1600);
-      this.dino.setTexture('dino', 0);
+      this.mainCharacter.body.height = 92;
+      this.mainCharacter.body.offset.y = 0;
+      this.mainCharacter.setVelocityY(-1600);
+      this.mainCharacter.setTexture('dino', 0);
     };
 
     this.input.on('pointerdown', handleJump);
@@ -250,12 +253,12 @@ class PlayScene extends Phaser.Scene {
     this.input.keyboard.on('keydown_SPACE', handleJump);
 
     // this.input.keyboard.on('keydown_DOWN', () => {
-    //   if (!this.dino.body.onFloor() || !this.isGameRunning) {
+    //   if (!this.mainCharacter.body.onFloor() || !this.isGameRunning) {
     //     return;
     //   }
 
-    //   this.dino.body.height = 58;
-    //   this.dino.body.offset.y = 34;
+    //   this.mainCharacter.body.height = 58;
+    //   this.mainCharacter.body.offset.y = 34;
     // });
 
     // this.input.keyboard.on('keyup_DOWN', () => {
@@ -263,8 +266,8 @@ class PlayScene extends Phaser.Scene {
     //     return;
     //   }
 
-    //   this.dino.body.height = 92;
-    //   this.dino.body.offset.y = 0;
+    //   this.mainCharacter.body.height = 92;
+    //   this.mainCharacter.body.offset.y = 0;
     // });
   }
 
@@ -344,13 +347,16 @@ class PlayScene extends Phaser.Scene {
       }
     });
 
-    if (this.dino.body.deltaAbsY() > 0) {
-      this.dino.anims.stop();
-      this.dino.setTexture('dino', 0);
+    if (this.mainCharacter.body.deltaAbsY() > 0) {
+      this.mainCharacter.anims.stop();
+      this.mainCharacter.setTexture('dino', 0);
     } else {
-      this.dino.body.height <= 58
-        ? this.dino.play('dino-down-anim', true)
-        : this.dino.play('boy-run', true);
+      this.mainCharacter.body.height <= 58
+        ? this.mainCharacter.play('dino-down-anim', true)
+        : this.mainCharacter.play('boy-run', true);
+    }
+
+    if (LIFE_STAGE.TEEN) {
     }
   }
 }
