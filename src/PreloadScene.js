@@ -11,8 +11,8 @@ class PreloadScene extends Phaser.Scene {
     this.load.audio('reach', 'assets/reach.m4a');
 
     this.load.image('ground', 'assets/ground.png');
-    this.load.image('boy-idle', 'assets/boy-idle.png');
-    this.load.image('boy-hurt', 'assets/boy-hurt.png');
+    this.load.image('kid-idle', 'assets/kid-idle.png');
+    this.load.image('kid-hurt', 'assets/kid-hurt.png');
     this.load.image('restart', 'assets/restart.png');
     this.load.image('game-over', 'assets/game-over.png');
     this.load.image('cloud', 'assets/cloud.png');
@@ -27,7 +27,7 @@ class PreloadScene extends Phaser.Scene {
       frameHeight: 40,
     });
 
-    this.load.spritesheet('dino', 'assets/boy-run.png', {
+    this.load.spritesheet('dino', 'assets/kid-run.png', {
       frameWidth: 88,
       frameHeight: 94,
     });

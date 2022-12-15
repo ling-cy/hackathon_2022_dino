@@ -33,7 +33,7 @@ class PlayScene extends Phaser.Scene {
       .tileSprite(0, height, 88, 26, 'ground')
       .setOrigin(0, 1);
     this.mainCharacter = this.physics.add
-      .sprite(0, height, 'boy-idle')
+      .sprite(0, height, 'kid-idle')
       .setCollideWorldBounds(true)
       .setGravityY(5000)
       .setBodySize(44, 92)
@@ -103,7 +103,7 @@ class PlayScene extends Phaser.Scene {
         this.physics.pause();
         this.isGameRunning = false;
         this.anims.pauseAll();
-        this.mainCharacter.setTexture('boy-hurt');
+        this.mainCharacter.setTexture('kid-hurt');
         this.respawnTime = 0;
         this.gameSpeed = INITIAL_GAME_SPEED;
         this.gameOverScreen.setAlpha(1);
@@ -134,7 +134,7 @@ class PlayScene extends Phaser.Scene {
           callbackScope: this,
           callback: () => {
             this.mainCharacter.setVelocityX(80);
-            this.mainCharacter.play('boy-run', 1);
+            this.mainCharacter.play('kid-run', 1);
 
             if (this.ground.width < width) {
               this.ground.width += 17 * 2;
@@ -158,14 +158,14 @@ class PlayScene extends Phaser.Scene {
 
   initAnims() {
     this.anims.create({
-      key: 'boy-run',
+      key: 'kid-run',
       frames: this.anims.generateFrameNumbers('dino', { start: 2, end: 3 }),
       frameRate: 10,
       repeat: -1,
     });
 
     this.anims.create({
-      key: 'dino-down-anim',
+      key: 'teen-run',
       frames: this.anims.generateFrameNumbers('dino-down', {
         start: 0,
         end: 1,
@@ -251,24 +251,6 @@ class PlayScene extends Phaser.Scene {
     this.input.on('pointerdown', handleJump);
 
     this.input.keyboard.on('keydown_SPACE', handleJump);
-
-    // this.input.keyboard.on('keydown_DOWN', () => {
-    //   if (!this.mainCharacter.body.onFloor() || !this.isGameRunning) {
-    //     return;
-    //   }
-
-    //   this.mainCharacter.body.height = 58;
-    //   this.mainCharacter.body.offset.y = 34;
-    // });
-
-    // this.input.keyboard.on('keyup_DOWN', () => {
-    //   if (this.score !== 0 && !this.isGameRunning) {
-    //     return;
-    //   }
-
-    //   this.mainCharacter.body.height = 92;
-    //   this.mainCharacter.body.offset.y = 0;
-    // });
   }
 
   placeObstacle() {
@@ -350,13 +332,10 @@ class PlayScene extends Phaser.Scene {
     if (this.mainCharacter.body.deltaAbsY() > 0) {
       this.mainCharacter.anims.stop();
       this.mainCharacter.setTexture('dino', 0);
-    } else {
-      this.mainCharacter.body.height <= 58
-        ? this.mainCharacter.play('dino-down-anim', true)
-        : this.mainCharacter.play('boy-run', true);
     }
 
-    if (LIFE_STAGE.TEEN) {
+    if (this.lifeStage === LIFE_STAGE.TEEN) {
+      this.mainCharacter.play(`${this.lifeStage}-run`, true);
     }
   }
 }
