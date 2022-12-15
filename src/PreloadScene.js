@@ -37,7 +37,12 @@ class PreloadScene extends Phaser.Scene {
       frameHeight: 94,
     });
 
-    this.load.spritesheet('enemy-bird', 'assets/enemy-bird.png', {
+    // this.load.spritesheet('enemy-bird', 'assets/enemy-bird.png', {
+    //   frameWidth: 92,
+    //   frameHeight: 77,
+    // });
+
+    this.load.spritesheet('enemy-bird', 'assets/enemy-bird-virus.png', {
       frameWidth: 92,
       frameHeight: 77,
     });
