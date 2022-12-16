@@ -95,7 +95,7 @@ class PlayScene extends Phaser.Scene {
 
     this.scoreText = this.add
       .text(width, 0, '00000', {
-        fill: '#535353',
+        fill: '#191357',
         font: '900 35px Courier',
         resolution: 5,
       })
@@ -113,7 +113,7 @@ class PlayScene extends Phaser.Scene {
 
     this.lifeText = this.add
       .text(width, this.scoreText.height + 20, '1', {
-        fill: '#535353',
+        fill: '#FF0068',
         font: '900 35px Courier',
         resolution: 5,
       })
@@ -133,7 +133,7 @@ class PlayScene extends Phaser.Scene {
       .container(width / 2, height / 2 - 50)
       .setAlpha(0);
     // this.gameOverText = this.add.image(0, 0, 'game-over');
-    this.restart = this.add.image(0, 80, 'restart').setInteractive();
+    this.restart = this.add.image(400, 80, 'restart').setInteractive();
     // this.gameOverScreen.add([this.gameOverText, this.restart]);
     this.gameOverScreen.add([this.restart]);
 
@@ -350,6 +350,7 @@ class PlayScene extends Phaser.Scene {
       this.gameOverScreen.setAlpha(0);
       this.anims.resumeAll();
       document.getElementById('leaderboard').style.display = 'none';
+      document.getElementById('reward-board').style.display = 'none';
     });
 
     const handleJump = () => {
@@ -359,7 +360,6 @@ class PlayScene extends Phaser.Scene {
       ) {
         return;
       }
-      console.log(this.lifeStage);
 
       this.jumpSound.play();
       this.mainCharacter.body.height = 92;

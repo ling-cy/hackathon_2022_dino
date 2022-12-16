@@ -1,151 +1,247 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
-        body {
-            font-family: 'Press Start 2P', cursive;
-            display: flex;
-            justify-content: center;
-            margin: 0;
-            padding: 0;
-            border: none;
-            overflow: hidden;
-        }
+      body {
+        font-family: 'Press Start 2P', cursive;
+        display: flex;
+        justify-content: center;
+        margin: 0;
+        padding: 0;
+        border: none;
+        overflow: hidden;
+      }
 
-        #form {
-            display: none;
-            justify-content: center;
-            align-items: center;
-        }
+      #form {
+        display: none;
+        justify-content: center;
+        align-items: center;
+      }
 
-        #leaderboard {
-            position: absolute;
-            padding: 10px 0;
-            /*display: flex;*/
-            display: none;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-        }
+      #leaderboard {
+        position: absolute;
+        padding: 10px 0;
+        /*display: flex;*/
+        display: none;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
 
-        #leaderboard .big-header {
-            font-size: 20px;
-            letter-spacing: 20px;
-            margin-bottom: 12px;
-        }
+      #leaderboard .big-header {
+        font-size: 20px;
+        letter-spacing: 20px;
+        margin-bottom: 12px;
+      }
 
-        #leaderboard .header {
-            padding: 10px;
-        }
+      #leaderboard .header {
+        padding: 10px;
+      }
 
-        #leaderboard .score-list {
-            width: 400px;
-            font-size: 12px;
-        }
+      #leaderboard .score-list {
+        width: 400px;
+        font-size: 12px;
+      }
 
-        #leaderboard .score-list > div {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 2px;
-            padding: 5px 10px;
-        }
+      #leaderboard .score-list > div {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 2px;
+        padding: 5px 10px;
+      }
 
-        #leaderboard .score-list > div > div {
-            background: rgba(255, 255, 255, 0.8);
-        }
+      #leaderboard .score-list > div > div {
+        background: rgba(255, 255, 255, 0.8);
+      }
 
-        .current {
-            background: rgba(0, 0, 0, 0.6);
-            color: white;
-        }
+      #reward-button {
+        background-color: #ff0068;
+        color: white;
+        height: 2rem;
+        font-family: 'Press Start 2P', cursive;
+        border-radius: 1rem;
+        padding: 0px 1rem;
+      }
 
-        .current > div {
-            background: transparent !important;
-        }
+      #reward-board {
+        position: absolute;
+        padding: 10px 0;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        margin-top: 4rem;
+      }
+
+      #reward-board .header {
+        font-size: 1.125rem;
+        padding: 0.5rem;
+        background-color: #ff0068;
+        border-radius: 0.5rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        border: 3px solid black;
+        font-weight: 700;
+        margin-bottom: -0.75rem;
+        z-index: 1;
+      }
+
+      #reward-board .content {
+        font-size: 0.875rem;
+        padding: 2rem;
+        background-color: #fff0f6;
+        border-radius: 0.75rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        font-weight: 300;
+        width: 450px;
+      }
+
+      #reward-board .reminder {
+        margin-top: 1rem;
+        font-size: 0.625rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      #reward-board .code {
+        margin-top: 1.5rem;
+        font-size: 1rem;
+        padding: 0.5rem 1rem;
+        background-color: white;
+        border-radius: 0.25rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: black;
+        font-weight: 700;
+      }
+
+      .current {
+        background: rgba(0, 0, 0, 0.6);
+        color: white;
+      }
+
+      .current > div {
+        background: transparent !important;
+      }
     </style>
-</head>
-<body>
-<!--<div id="form">-->
-<!--    <div class="box">-->
-<!--        <div>Game Over</div>-->
-<!--        <label for="name">Name:</label><input id="name"/>-->
-<!--        <label for="score"></label><input readonly id="score"/>-->
-<!--    </div>-->
-<!--</div>-->
+  </head>
+  <body>
+    <!--<div id="form">-->
+    <!--    <div class="box">-->
+    <!--        <div>Game Over</div>-->
+    <!--        <label for="name">Name:</label><input id="name"/>-->
+    <!--        <label for="score"></label><input readonly id="score"/>-->
+    <!--    </div>-->
+    <!--</div>-->
 
-<div id="leaderboard">
-    <div class="big-header">
-        GAME OVER
+    <div id="leaderboard">
+      <div class="big-header">GAME OVER</div>
+      <div class="header">HIGH SCORE</div>
+
+      <div class="score-list"></div>
+
+      <button id="reward-button">Claim your reward</button>
     </div>
-    <div class="header">
-        HIGH SCORE
+
+    <div id="reward-board">
+      <div class="header">You get 15% off!</div>
+      <div class="content">
+        Use this promo code to get 15% on any of our wellness products.
+        <div class="code">WELLNESS15</div>
+        <div class="reminder">Date Period: From now until 31 October 2023</div>
+      </div>
     </div>
+    <script>
+      let leaderboard;
 
-    <div class="score-list">
-    </div>
-</div>
-<script>
-    let leaderboard
+      const fetchLeaderBoard = () =>
+        fetch('https://api.jsonbin.io/v3/b/639ac545dfc68e59d568b0d6', {
+          headers: {
+            'X-Access-key':
+              '$2b$10$0O6oL0C705OqpcFPtyDV3exBAO6Ent8kxytVEvOBcshWw.ZnrizLy',
+          },
+        });
 
-    const fetchLeaderBoard = () => fetch('https://api.jsonbin.io/v3/b/639ac545dfc68e59d568b0d6', {
-        headers: {
-            "X-Access-key": "$2b$10$0O6oL0C705OqpcFPtyDV3exBAO6Ent8kxytVEvOBcshWw.ZnrizLy"
-        }
-    })
-
-    const updateLeaderBoard = (score) => {
-        return fetchLeaderBoard().then(res => res.json()).then(({record}) => {
-            const {rankings} = record
-            return fetch('https://api.jsonbin.io/v3/b/639ac545dfc68e59d568b0d6', {
+      const updateLeaderBoard = score => {
+        return fetchLeaderBoard()
+          .then(res => res.json())
+          .then(({ record }) => {
+            const { rankings } = record;
+            return fetch(
+              'https://api.jsonbin.io/v3/b/639ac545dfc68e59d568b0d6',
+              {
                 method: 'PUT',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'X-Access-key':
-                        '$2b$10$0O6oL0C705OqpcFPtyDV3exBAO6Ent8kxytVEvOBcshWw.ZnrizLy',
+                  'Content-Type': 'application/json',
+                  'X-Access-key':
+                    '$2b$10$0O6oL0C705OqpcFPtyDV3exBAO6Ent8kxytVEvOBcshWw.ZnrizLy',
                 },
                 body: JSON.stringify({
-                    rankings: [...rankings, {name: 'temp', score}].sort((a, b) => b.score - a.score).slice(0, 10),
+                  rankings: [...rankings, { name: 'temp', score }]
+                    .sort((a, b) => b.score - a.score)
+                    .slice(0, 10),
                 }),
-            })
-        })
-    }
+              },
+            );
+          });
+      };
 
-    const makeLeaderBoard = (cache, currentScore) => {
-        document.querySelector('#leaderboard .score-list').innerHTML = ''
-        let currentHit = false
-        const rankings = (cache || leaderboard).sort((a, b) => b.score - a.score).slice(0, 10)
+      const makeLeaderBoard = (cache, currentScore) => {
+        document.querySelector('#leaderboard .score-list').innerHTML = '';
+        let currentHit = false;
+        const rankings = (cache || leaderboard)
+          .sort((a, b) => b.score - a.score)
+          .slice(0, 10);
         for (let [i, item] of rankings.entries()) {
-            leaderboard = rankings
-            const ele = document.createElement('div')
-            if (!currentHit && currentScore === item.score) {
-                ele.className = 'current'
-                currentHit = true
-            }
-            const rank = document.createElement('div')
-            rank.innerText = i + 1
-            ele.appendChild(rank)
-            // const name = document.createElement('div')
-            // name.innerText = item.name
-            // ele.appendChild(name)
-            const score = document.createElement('div')
-            score.innerText = item.score
-            ele.appendChild(score)
-            document.querySelector('#leaderboard .score-list').appendChild(ele)
+          leaderboard = rankings;
+          const ele = document.createElement('div');
+          if (!currentHit && currentScore === item.score) {
+            ele.className = 'current';
+            currentHit = true;
+          }
+          const rank = document.createElement('div');
+          rank.innerText = i + 1;
+          ele.appendChild(rank);
+          // const name = document.createElement('div')
+          // name.innerText = item.name
+          // ele.appendChild(name)
+          const score = document.createElement('div');
+          score.innerText = item.score;
+          ele.appendChild(score);
+          document.querySelector('#leaderboard .score-list').appendChild(ele);
         }
-    }
+      };
 
-    fetchLeaderBoard().then(res => res.json()).then(({record}) => {
-        const {rankings} = record
-        leaderboard = rankings
-        makeLeaderBoard()
-    })
-</script>
-</body>
+      fetchLeaderBoard()
+        .then(res => res.json())
+        .then(({ record }) => {
+          const { rankings } = record;
+          leaderboard = rankings;
+          makeLeaderBoard();
+        });
+
+      const rewardButton = document.getElementById('reward-button');
+      rewardButton.addEventListener('click', () => {
+        document.getElementById('leaderboard').style.display = 'none';
+        document.getElementById('reward-board').style.display = 'flex';
+      });
+    </script>
+  </body>
 </html>
